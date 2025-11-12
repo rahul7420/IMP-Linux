@@ -1,0 +1,108 @@
+Practical No. 7 – Transfer Learning using Pretrained CNN
+Aim:
+
+To use Transfer Learning with a pretrained CNN model (like VGG16 or ResNet18) for image classification and compare its accuracy with a model trained from scratch.
+
+Theory:
+
+Transfer Learning means using a pretrained model (already trained on a large dataset like ImageNet) for a new problem with a smaller dataset.
+
+Instead of training a network from zero, we reuse the learned weights and features from another model.
+
+Why use Transfer Learning?
+
+It reduces training time.
+
+Works well even with small datasets.
+
+Gives higher accuracy.
+
+Prevents overfitting.
+
+How it works:
+
+Take a pretrained CNN (like VGG16 or ResNet18).
+
+Keep the initial layers (that detect edges, shapes).
+
+Replace the last layer with a new one for your dataset (e.g., 10 classes).
+
+Train (fine-tune) only the last few layers.
+
+Common pretrained models:
+
+VGG16: Simple and deep.
+
+ResNet18: Uses skip connections to avoid vanishing gradients.
+
+MobileNet: Lightweight, fast for mobile devices.
+
+Algorithm:
+
+1.Import libraries – torch, torchvision, torch.nn, matplotlib.
+
+2.Load dataset – CIFAR-10 or custom image dataset.
+
+3.Apply transformations (resize, normalize).
+
+4.Load pretrained model:
+
+	model = models.resnet18(pretrained=True)
+
+
+5.Freeze early layers and replace the last fully connected layer.
+
+6.Define loss function (CrossEntropyLoss) and optimizer (Adam or SGD).
+
+7.Train the model for a few epochs.
+
+8.Test the model and calculate accuracy.
+
+9.Plot loss and accuracy curves.
+
+
+
+Result:
+
+The pretrained CNN converged faster and gave better accuracy than a CNN trained from scratch.
+
+Example:
+
+Epoch 10: Train Accuracy = 98%, Test Accuracy = 97%
+
+Conclusion:
+
+Transfer Learning helps to reuse pretrained models to solve new problems quickly and efficiently.
+It saves time, improves accuracy, and reduces overfitting when data is limited.
+
+Viva Questions:
+
+Q1: What is transfer learning?
+A: Using a pretrained model on a new dataset.
+
+Q2: Why do we use pretrained models?
+A: To save time and get better accuracy with small datasets.
+
+Q3: What is fine-tuning?
+A: Retraining only some layers of the pretrained model on the new dataset.
+
+Q4: What is the loss function used?
+A: Cross Entropy Loss.
+
+Q5: What optimizer is used?
+A: Adam or SGD.
+
+Q6: Name some pretrained CNN models.
+A: VGG16, ResNet18, MobileNet, Inception.
+
+Q7: What are frozen layers?
+A: Layers whose weights are not updated during training.
+
+Q8: What dataset is used?
+A: CIFAR-10 or any small custom image dataset.
+
+Q9: What is the advantage of transfer learning?
+A: Faster training and better accuracy with less data.
+
+Q10: Which model performed best?
+A: ResNet18 performed best due to skip connections.

@@ -1,0 +1,497 @@
+Practical No. 6 – Implementation of Recurrent Neural Network (RNN/LSTM)
+Aim:
+
+To implement a Recurrent Neural Network (RNN) or Long Short-Term Memory (LSTM) model using PyTorch for sequence or text data classification, and to understand how it handles sequential dependencies.
+
+Theory:
+1️⃣ Introduction:
+
+Traditional neural networks (like MLPs and CNNs) assume that all inputs are independent.
+However, many real-world problems have sequential or temporal relationships, such as:
+
+Text (words in a sentence)
+
+Speech (sound over time)
+
+Time series (stock prices, sensor readings)
+
+A Recurrent Neural Network (RNN) is designed to handle such sequential data by maintaining an internal memory (hidden state) that captures information from previous steps.
+
+2️⃣ RNN Architecture:
+
+An RNN processes input sequences one element at a time.
+At each time step t, it takes input xₜ, the previous hidden state hₜ₋₁, and produces a new hidden state hₜ as:
+
+ℎ
+𝑡
+=
+𝑓
+(
+𝑊
+𝑥
+ℎ
+𝑥
+𝑡
++
+𝑊
+ℎ
+ℎ
+ℎ
+𝑡
+−
+1
++
+𝑏
+ℎ
+)
+h
+t
+	​
+
+=f(W
+xh
+	​
+
+x
+t
+	​
+
++W
+hh
+	​
+
+h
+t−1
+	​
+
++b
+h
+	​
+
+)
+𝑦
+𝑡
+=
+𝑊
+ℎ
+𝑦
+ℎ
+𝑡
++
+𝑏
+𝑦
+y
+t
+	​
+
+=W
+hy
+	​
+
+h
+t
+	​
+
++b
+y
+	​
+
+
+Here:
+
+xₜ: input at time step t
+
+hₜ: hidden state at time step t
+
+W: weight matrices
+
+f: activation function (usually tanh or ReLU)
+
+3️⃣ Limitations of Vanilla RNN:
+
+Vanishing Gradient Problem: Gradients become very small while training on long sequences, making it difficult to learn long-term dependencies.
+
+Exploding Gradient Problem: Gradients grow excessively large, causing unstable updates.
+
+To overcome these issues, LSTM (Long Short-Term Memory) and GRU (Gated Recurrent Unit) were developed.
+
+4️⃣ LSTM (Long Short-Term Memory):
+
+An LSTM is an advanced RNN architecture that can remember information for long periods using gates:
+
+Forget Gate: Decides what information to discard.
+
+Input Gate: Decides what new information to store.
+
+Output Gate: Decides what to output at the current step.
+
+LSTM equations:
+
+𝑓
+𝑡
+=
+𝜎
+(
+𝑊
+𝑓
+[
+ℎ
+𝑡
+−
+1
+,
+𝑥
+𝑡
+]
++
+𝑏
+𝑓
+)
+f
+t
+	​
+
+=σ(W
+f
+	​
+
+[h
+t−1
+	​
+
+,x
+t
+	​
+
+]+b
+f
+	​
+
+)
+𝑖
+𝑡
+=
+𝜎
+(
+𝑊
+𝑖
+[
+ℎ
+𝑡
+−
+1
+,
+𝑥
+𝑡
+]
++
+𝑏
+𝑖
+)
+i
+t
+	​
+
+=σ(W
+i
+	​
+
+[h
+t−1
+	​
+
+,x
+t
+	​
+
+]+b
+i
+	​
+
+)
+𝐶
+𝑡
+~
+=
+tanh
+⁡
+(
+𝑊
+𝐶
+[
+ℎ
+𝑡
+−
+1
+,
+𝑥
+𝑡
+]
++
+𝑏
+𝐶
+)
+C
+t
+	​
+
+~
+	​
+
+=tanh(W
+C
+	​
+
+[h
+t−1
+	​
+
+,x
+t
+	​
+
+]+b
+C
+	​
+
+)
+𝐶
+𝑡
+=
+𝑓
+𝑡
+∗
+𝐶
+𝑡
+−
+1
++
+𝑖
+𝑡
+∗
+𝐶
+𝑡
+~
+C
+t
+	​
+
+=f
+t
+	​
+
+∗C
+t−1
+	​
+
++i
+t
+	​
+
+∗
+C
+t
+	​
+
+~
+	​
+
+𝑜
+𝑡
+=
+𝜎
+(
+𝑊
+𝑜
+[
+ℎ
+𝑡
+−
+1
+,
+𝑥
+𝑡
+]
++
+𝑏
+𝑜
+)
+o
+t
+	​
+
+=σ(W
+o
+	​
+
+[h
+t−1
+	​
+
+,x
+t
+	​
+
+]+b
+o
+	​
+
+)
+ℎ
+𝑡
+=
+𝑜
+𝑡
+∗
+tanh
+⁡
+(
+𝐶
+𝑡
+)
+h
+t
+	​
+
+=o
+t
+	​
+
+∗tanh(C
+t
+	​
+
+)
+
+Where:
+
+σ = sigmoid activation
+
+* = element-wise multiplication
+
+Cₜ = cell state (long-term memory)
+
+5️⃣ Applications of RNN/LSTM:
+
+Text generation
+
+Sentiment analysis
+
+Machine translation
+
+Speech recognition
+
+Time series forecasting
+
+Algorithm:
+
+1.Import Libraries:
+
+-torch, torch.nn, torch.optim, torchtext (or custom text data).
+
+2.Data Preparation:
+
+-Preprocess input sequences (e.g., sentences, characters).
+
+-Tokenize and convert to numerical form (word indices).
+
+-Create DataLoader for training and testing.
+
+3.Model Definition:
+
+-Define an RNN or LSTM class.
+
+-Input layer → Embedding layer → RNN/LSTM → Fully connected output layer.
+Example (LSTM):
+
+class LSTMModel(nn.Module):
+    def __init__(self, input_size, hidden_size, num_classes):
+        super().__init__()
+        self.lstm = nn.LSTM(input_size, hidden_size, batch_first=True)
+        self.fc = nn.Linear(hidden_size, num_classes)
+    def forward(self, x):
+        out, (h, c) = self.lstm(x)
+        out = self.fc(out[:, -1, :])
+        return out
+
+
+4.Loss and Optimizer:
+
+-Loss: CrossEntropyLoss
+
+-Optimizer: Adam or SGD
+
+5.Training Loop:
+
+-For each epoch:
+
+	-Forward pass through the RNN/LSTM.
+
+	-Compute loss.
+
+	-Backward pass and update weights.
+
+	-Calculate accuracy.
+
+6.Testing Phase:
+
+-Evaluate model on test data.
+
+-Measure loss and accuracy.
+
+7.Plot Results:
+
+-Plot training and testing loss.
+
+-Plot training and testing accuracy over epochs.
+
+
+Result:
+
+The RNN/LSTM model successfully learns temporal patterns from sequential data.
+
+It achieves high accuracy and stable convergence compared to simple feedforward networks.
+
+Example Output:
+
+Epoch [5/5], Train Loss: 0.1224, Train Acc: 95.2%, Test Acc: 94.7%
+
+Conclusion:
+
+RNNs are useful for processing sequential data but suffer from vanishing/exploding gradients.
+
+LSTM networks solve this by introducing gates that control memory and forget mechanisms.
+
+The experiment demonstrates how LSTM effectively handles long-term dependencies, achieving better performance than vanilla RNNs.
+
+Viva / Oral Questions and Answers:
+
+Q1. What is an RNN?
+A: A Recurrent Neural Network processes sequential data by maintaining a hidden state that captures previous context.
+
+Q2. Why are RNNs used for text data?
+A: Because they remember previous inputs, helping understand context in sequences (e.g., sentences).
+
+Q3. What is the difference between RNN and LSTM?
+A: LSTM uses gates (input, forget, output) to store long-term information, while RNNs can forget old information due to vanishing gradients.
+
+Q4. What is the vanishing gradient problem?
+A: Gradients become very small during backpropagation through time, preventing effective learning of long sequences.
+
+Q5. How does LSTM solve vanishing gradients?
+A: LSTM introduces a cell state and gating mechanism that preserve gradients over long time steps.
+
+Q6. What is the role of the forget gate in LSTM?
+A: It decides which past information to remove from the cell state.
+
+Q7. What is the purpose of the embedding layer?
+A: It converts words or tokens into dense numerical vectors suitable for neural network input.
+
+Q8. Which loss function is used?
+A: Cross Entropy Loss for classification tasks.
+
+Q9. What optimizer is commonly used?
+A: Adam Optimizer, as it provides faster convergence and adaptive learning rates.
+
+Q10. What are the main applications of LSTM?
+A: Sentiment analysis, machine translation, time series prediction, speech recognition, and text generation.

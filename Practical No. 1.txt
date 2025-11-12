@@ -1,0 +1,117 @@
+Practical No. 1 – Implementation of Perceptron for AND Gate
+Aim:
+
+To implement a Single Layer Perceptron using Python and NumPy for the AND logic gate and visualize its decision boundary.
+
+Theory:
+
+The Perceptron is the simplest type of artificial neural network used for binary classification.
+It was introduced by Frank Rosenblatt in 1958.
+The perceptron simulates a biological neuron that receives inputs, multiplies them with weights, adds a bias, and passes the result through an activation function to produce an output.
+
+Perceptron Model:
+
+Each perceptron has:
+
+Inputs: x₁, x₂, …, xₙ
+
+Weights: w₁, w₂, …, wₙ
+
+Bias: b
+
+Activation function: Step function
+
+Mathematically:
+z = (w₁x₁ + w₂x₂ + … + wₙxₙ) + b
+
+Output (y):
+If z ≥ 0 → y = 1
+Else → y = 0
+
+Learning Rule:
+
+The perceptron learns by updating its weights based on the error between the true and predicted output.
+
+Weight update formula:
+wⱼ(new) = wⱼ(old) + η × (y_true − y_pred) × xⱼ
+b(new) = b(old) + η × (y_true − y_pred)
+
+Where,
+η = learning rate (0 < η ≤ 1)
+
+Activation Function:
+
+We use a Step (Threshold) Function:
+f(z) = 1 if z ≥ 0
+f(z) = 0 if z < 0
+
+Perceptron for AND Gate:
+X₁	X₂	Y
+0	0	0
+0	1	0
+1	0	0
+1	1	1
+
+-The AND gate is linearly separable, meaning a straight line can separate the classes (0 and 1).
+
+-Therefore, a single-layer perceptron can learn this logic perfectly.
+
+Algorithm: (Perceptron Learning Algorithm)
+
+1.Initialize weights and bias with small random values.
+
+2.Set learning rate (η) and number of epochs.
+
+3.For each epoch:
+	a. For each training sample (xi, yi):
+	i. Compute the weighted sum → z = w·xi + b
+	ii. Apply step activation function:
+	- If z ≥ 0 → y_pred = 1
+	- Else → y_pred = 0
+	iii. Compute error = yi − y_pred
+	iv. Update weights → w = w + η × error × xi
+	v. Update bias → b = b + η × error
+
+4.Repeat steps until there are no errors or maximum epochs reached.
+
+5.Plot the decision boundary and display final weights and bias.
+
+Result:
+
+After training, the perceptron correctly classifies the AND gate outputs.
+
+Accuracy = 100%
+
+The decision boundary separates the single output ‘1’ point from the ‘0’ points.
+
+Example Output:
+Epoch 10: Weights = [0.2, 0.1], Bias = -0.1
+
+Conclusion:
+
+The Perceptron successfully learns the AND gate because the data is linearly separable.
+However, it cannot learn non-linearly separable problems like the XOR gate.
+To handle such cases, multi-layer perceptrons (MLPs) are used.
+
+Viva Questions and Answers:
+
+Q: What is a perceptron?
+A: A perceptron is a single-layer neural network used for binary classification.
+
+Q: What is the learning rule of a perceptron?
+A: w = w + η × (y_true − y_pred) × x
+
+Q: Which activation function is used in a perceptron?
+A: Step (threshold) activation function.
+
+Q: Can a perceptron learn XOR logic?
+A: No, because XOR is not linearly separable.
+
+Q: What does the bias term do?
+A: The bias shifts the decision boundary left or right.
+
+Q: What happens if the learning rate is too high?
+A: The model oscillates and may not converge properly.
+
+Q: What is convergence in a perceptron?
+A: When all samples are correctly classified and no weight updates are required.

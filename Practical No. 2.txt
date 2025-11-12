@@ -1,0 +1,259 @@
+Practical No. 2 – Implementation of Multilayer Perceptron (MLP)
+Aim:
+
+To implement a Multilayer Perceptron (MLP) using PyTorch for image classification on the MNIST or Fashion-MNIST dataset, and to plot the loss and accuracy curves.
+
+Theory:
+
+A Multilayer Perceptron (MLP) is a type of feedforward artificial neural network that consists of three main layers:
+
+Input layer
+
+One or more hidden layers
+
+Output layer
+
+Each neuron in one layer is connected to every neuron in the next layer.
+It is capable of learning non-linear relationships between input and output using activation functions.
+
+Working of MLP:
+
+The input layer receives raw data (for MNIST → 28×28 pixels = 784 inputs).
+
+Data is passed through hidden layers where each neuron computes a weighted sum:
+
+𝑧
+=
+(
+𝑤
+1
+𝑥
+1
++
+𝑤
+2
+𝑥
+2
++
+.
+.
+.
++
+𝑤
+𝑛
+𝑥
+𝑛
+)
++
+𝑏
+z=(w
+1
+	​
+
+x
+1
+	​
+
++w
+2
+	​
+
+x
+2
+	​
+
++...+w
+n
+	​
+
+x
+n
+	​
+
+)+b
+
+The result is passed through an activation function (like ReLU, Sigmoid, or Tanh).
+
+The final layer uses the Softmax function to produce probabilities for each class.
+
+The model is trained by minimizing the Cross Entropy Loss using an optimizer such as Adam or SGD.
+
+Common Activation Functions:
+Function	Formula	Output Range	Remarks
+Sigmoid	1 / (1 + e^-x)	(0, 1)	Used for binary classification
+Tanh	(e^x - e^-x) / (e^x + e^-x)	(-1, 1)	Centered version of Sigmoid
+ReLU	max(0, x)	[0, ∞)	Fast and avoids vanishing gradients
+Loss Function:
+
+For multi-class classification, Cross Entropy Loss is used:
+
+𝐿
+=
+−
+∑
+𝑖
+=
+1
+𝑛
+𝑦
+𝑖
+log
+⁡
+(
+𝑦
+𝑖
+^
+)
+L=−
+i=1
+∑
+n
+	​
+
+y
+i
+	​
+
+log(
+y
+i
+	​
+
+^
+	​
+
+)
+
+where
+
+𝑦
+𝑖
+y
+i
+	​
+
+ = true label
+
+𝑦
+𝑖
+^
+y
+i
+	​
+
+^
+	​
+
+ = predicted probability for class i
+
+Optimizer:
+
+Optimizers adjust model weights based on gradients to minimize loss.
+
+Common optimizers: Stochastic Gradient Descent (SGD) and Adam.
+
+Dataset Used:
+
+MNIST – Handwritten digits (0–9), grayscale, size 28×28.
+
+Fashion-MNIST – Images of clothes, shoes, bags, etc., grayscale, size 28×28.
+
+Algorithm: (MLP Training Steps)
+
+1.Import libraries: torch, torchvision, matplotlib.
+
+2.Set hyperparameters: learning rate, epochs, batch size, and activation function.
+
+3.Load dataset: MNIST or Fashion-MNIST with normalization.
+
+4.Create data loaders for training and testing sets.
+
+5.Define the MLP model:
+
+	-Flatten the input (28×28 → 784).
+
+	-Add multiple fully connected layers.
+
+	-Apply activation function after each layer.
+
+	-Add output layer with 10 neurons (for 10 classes).
+
+6.Define loss function: CrossEntropyLoss.
+
+7.Define optimizer: Adam.
+
+8.Training loop:
+
+	-Forward pass: compute model output.
+
+	-Compute loss between predicted and actual labels.
+
+	-Backward pass: compute gradients.
+
+	-Update weights using optimizer.
+
+9.Testing phase:
+
+	-Evaluate model on test data.
+
+	-Calculate test loss and accuracy.
+
+10.Plot results:
+
+	-Training loss vs. epochs.
+
+	-Test loss vs. epochs.
+
+	-Accuracy vs. epochs.
+
+Result:
+
+The MLP model was successfully trained and tested on the MNIST/Fashion-MNIST dataset.
+
+The model achieved around:
+
+Accuracy: 95–98% (MNIST)
+
+Accuracy: 85–90% (Fashion-MNIST)
+
+Loss decreased steadily with epochs, and accuracy improved over time.
+
+The plotted graphs clearly show the training and validation performance.
+
+Conclusion:
+
+The Multilayer Perceptron (MLP) is capable of learning complex, non-linear patterns in image data.
+It successfully classifies handwritten digits and fashion items with high accuracy.
+Using ReLU activation and Adam optimizer gives better convergence compared to Sigmoid or Tanh.
+
+Viva / Oral Questions and Answers:
+
+Q1. What is an MLP?
+A Multilayer Perceptron is a feedforward neural network with one or more hidden layers between the input and output.
+
+Q2. Why are activation functions used?
+To introduce non-linearity, helping the network learn complex patterns.
+
+Q3. Which activation function is most commonly used?
+ReLU, because it avoids the vanishing gradient problem and is computationally efficient.
+
+Q4. What loss function is used in MLP?
+Cross Entropy Loss for multi-class classification.
+
+Q5. What optimizer did you use?
+Adam Optimizer (Adaptive Moment Estimation), as it converges faster than SGD.
+
+Q6. Why do we normalize data?
+To bring all pixel values to a common scale (−1 to 1) for stable and faster training.
+
+Q7. What is the difference between MNIST and Fashion-MNIST?
+MNIST has handwritten digits (0–9), while Fashion-MNIST contains grayscale clothing images.
+
+Q8. What is the role of the learning rate?
+It controls how much the weights are updated during training.
+
+Q9. What happens if we increase the number of hidden layers?
+The model may learn better representations but can also overfit or train slower.
+
+Q10. Can an MLP handle image spatial structure well?
+Not very efficiently — CNNs (Convolutional Neural Networks) handle spatial patterns better.

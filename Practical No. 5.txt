@@ -1,0 +1,208 @@
+Practical No. 5 – Implementation of Convolutional Neural Network (CNN)
+Aim:
+
+To implement a Convolutional Neural Network (CNN) using PyTorch for image classification on the MNIST or CIFAR-10 dataset, and compare its performance with a simple Multilayer Perceptron (MLP).
+
+Theory:
+1️⃣ Introduction:
+
+A Convolutional Neural Network (CNN) is a deep learning model specifically designed for analyzing visual data such as images.
+Unlike traditional MLPs, CNNs automatically learn spatial hierarchies of features — edges, textures, shapes — by using convolutional filters.
+
+CNNs are highly effective for tasks like image recognition, object detection, and image classification.
+
+2️⃣ Why CNN instead of MLP?
+
+MLP treats all pixels independently and ignores spatial relationships.
+
+CNN uses convolutional filters to extract local features like edges and corners.
+
+CNNs have fewer parameters due to weight sharing and local connectivity.
+
+CNNs generalize better and are computationally efficient for image data.
+
+3️⃣ Architecture of a CNN:
+
+A typical CNN includes the following layers:
+
+Input Layer:
+
+Accepts image data (e.g., 28×28 grayscale image).
+
+Convolutional Layer (Conv Layer):
+
+Performs convolution between the input and learnable filters (kernels).
+
+Formula:
+
+𝑌
+(
+𝑖
+,
+𝑗
+)
+=
+(
+𝑋
+∗
+𝑊
+)
+(
+𝑖
+,
+𝑗
+)
++
+𝑏
+Y(i,j)=(X∗W)(i,j)+b
+
+Detects features such as edges and corners.
+
+Activation Function (ReLU):
+
+Adds non-linearity to the network.
+
+ReLU(x) = max(0, x).
+
+Pooling Layer (Max Pooling):
+
+Reduces spatial size and computation.
+
+Example: 2×2 max pooling reduces feature map size by half.
+
+Fully Connected (FC) Layer:
+
+Flattens features and maps them to the output classes.
+
+Output Layer:
+
+Uses Softmax for multi-class classification.
+
+4️⃣ Advantages of CNNs:
+
+Automatically learn relevant image features.
+
+Reduce number of parameters through weight sharing.
+
+Provide translation and scale invariance.
+
+Achieve higher accuracy than fully connected networks for visual data.
+
+**Algorithm:
+
+1.Import Libraries:
+-Import torch, torchvision, torch.nn, torch.optim, and matplotlib.
+
+2.Load Dataset:
+
+-Use MNIST or CIFAR-10 dataset.
+
+-Normalize pixel values and create DataLoader objects for training and testing.
+
+3.Define CNN Architecture:
+
+-Add two convolutional layers (Conv2D) with ReLU and MaxPooling.
+
+-Add fully connected layers to classify into output classes.
+
+-Example:
+
+Conv2d(1, 32, kernel_size=3)
+ReLU
+MaxPool2d(2)
+Conv2d(32, 64, kernel_size=3)
+ReLU
+MaxPool2d(2)
+Flatten
+Linear → ReLU → Linear → Output
+
+
+4.Define Loss and Optimizer:
+
+-Loss: CrossEntropyLoss
+
+-Optimizer: Adam or SGD
+
+5.Training Phase:
+
+-For each epoch:
+
+	-Forward pass: Compute output and loss.
+
+	-Backward pass: Compute gradients.
+
+	-Update weights with optimizer.
+
+	-Record training loss and accuracy.
+
+6.Testing Phase:
+
+-Evaluate the model on the test dataset.
+
+-Compute test loss and accuracy.
+
+7.Plot Results:
+
+-Plot training & test loss vs. epochs.
+
+-Plot training & test accuracy vs. epochs.
+
+8.Compare Results:
+
+Compare CNN’s performance with a simple MLP.
+
+
+Result:
+
+CNN successfully classifies handwritten digits or images with high accuracy.
+
+Loss decreases and accuracy increases with each epoch.
+
+Example result:
+
+Epoch 5/5: Train Loss = 0.042, Train Acc = 99.15%, Test Acc = 98.75%
+
+
+CNN shows higher accuracy and faster convergence than MLP due to feature extraction via convolutional layers.
+
+Conclusion:
+
+CNN automatically learns spatial and local features of images, unlike MLP which relies on flattened input.
+
+The use of convolution and pooling layers reduces parameters and improves efficiency.
+
+The experiment proves that CNNs achieve better accuracy and generalization for image classification tasks.
+
+CNNs form the foundation for advanced models like ResNet, VGG, and Inception networks.
+
+Viva / Oral Questions and Answers:
+
+Q1. What is a CNN?
+A Convolutional Neural Network is a deep learning model designed to process and classify image data using convolutional, pooling, and fully connected layers.
+
+Q2. What is convolution?
+Convolution is an operation where a kernel (filter) slides over the image to detect features like edges or corners.
+
+Q3. What is the role of ReLU?
+ReLU introduces non-linearity and helps prevent the vanishing gradient problem.
+
+Q4. What is the purpose of pooling?
+Pooling reduces the spatial dimensions of the feature map and helps make the model more robust to small image translations.
+
+Q5. What is the difference between CNN and MLP?
+CNN preserves spatial relationships using convolutions; MLP flattens the input, ignoring spatial structure.
+
+Q6. Why is CNN better for images?
+It captures local patterns, requires fewer parameters, and generalizes well for visual tasks.
+
+Q7. What is padding and stride in convolution?
+Padding adds extra pixels around the image to preserve size; stride determines how far the filter moves during convolution.
+
+Q8. What loss function is used for image classification?
+Cross Entropy Loss.
+
+Q9. What optimizer is used in this experiment?
+Adam or SGD optimizer.
+
+Q10. What are the main layers in a CNN?
+Convolutional layer, activation function (ReLU), pooling layer, and fully connected layer.

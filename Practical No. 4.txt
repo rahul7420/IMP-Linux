@@ -1,0 +1,160 @@
+Practical No. 4 – Comparison of Activation Functions and Gradient Flow
+Aim:
+
+To implement a Multilayer Perceptron (MLP) using different activation functions (Sigmoid, Tanh, and ReLU) on the MNIST dataset,
+and to compare their effects on training loss, accuracy, and gradient norms.
+
+Theory:
+
+An Activation Function introduces non-linearity into a neural network, enabling it to learn complex, non-linear patterns in the data.
+Without activation functions, neural networks would behave like simple linear models and could not solve complex tasks.
+
+1️⃣ Purpose of Activation Functions:
+
+Introduce non-linearity in the model.
+
+Help the network learn complex mappings between input and output.
+
+Control the flow of gradients during backpropagation.
+
+2️⃣ Types of Activation Functions Used:
+
+A) Sigmoid Function
+
+​
+Output range: (0, 1)
+
+Advantage: Smooth and used for binary classification.
+
+Disadvantage: Causes vanishing gradients for large input values.
+
+Derivative: 
+
+
+B) Tanh Function
+
+Output range: (-1, 1)
+
+Advantage: Zero-centered (helps in faster convergence).
+
+Disadvantage: Still suffers from vanishing gradients for large |x| values.
+
+C) ReLU (Rectified Linear Unit)
+
+
+
+Output range: [0, ∞)
+
+Advantage: Fast convergence, avoids vanishing gradient problem.
+
+Disadvantage: Can cause dying ReLU problem (neurons stuck at 0).
+
+3️⃣ Gradient Flow:
+
+During backpropagation, gradients are multiplied through many layers.
+
+If gradients are too small → Vanishing Gradient Problem (weights stop updating).
+
+If gradients are too large → Exploding Gradient Problem (unstable training).
+
+Monitoring the gradient norm (magnitude of gradients) helps detect this issue.
+
+4️⃣ Expected Behavior:
+Activation		Speed of Convergence		Gradient Flow			Accuracy			Comment
+Sigmoid		Slow						Very small (vanishing)	Low			Not preferred for deep networks
+Tanh			Moderate					Better than sigmoid		Moderate		Zero-centered but still vanishes
+ReLU		Fast						Stable gradients		High			Best for most cases
+Algorithm:
+
+1.Import required libraries – torch, torchvision, matplotlib, etc.
+
+2.Load Dataset – MNIST (handwritten digits 0–9).
+
+-Apply transformations: ToTensor() and normalization.
+
+-Create DataLoaders for training and testing.
+
+3.Define MLP Model:
+
+-3 layers: 784 → 256 → 128 → 10.
+
+-Use one of the activation functions (Sigmoid, Tanh, ReLU).
+
+4.Define Loss Function – CrossEntropyLoss.
+
+5.Define Optimizer – Adam optimizer with learning rate = 0.001.
+
+6.Train the Model:
+a. Perform forward pass (compute output).
+b. Compute loss using criterion.
+c. Backpropagate using loss.backward().
+d. Calculate gradient norm to monitor gradient behavior.
+e. Update weights using optimizer.step().
+f. Record loss and accuracy for each epoch.
+
+7.Repeat for each activation function (Sigmoid, Tanh, ReLU).
+
+8.Plot Results:
+
+-Loss vs Iterations
+
+-Accuracy vs Epochs
+
+-Gradient Norm vs Iterations
+
+9.Compare and analyze training performance for each activation.
+
+
+Observation (Expected Results):
+
+ReLU converges faster with higher accuracy (~97–98%).
+
+Tanh performs moderately well (~94–95%).
+
+Sigmoid converges slowly with lower accuracy (~90–92%).
+
+Gradient norms for Sigmoid and Tanh are smaller → Vanishing gradient observed.
+
+Gradient norms for ReLU are stable and higher → Healthy gradient flow.
+
+Conclusion:
+
+The choice of activation function significantly affects the learning speed, gradient behavior, and accuracy of a neural network.
+
+ReLU provides faster convergence and better gradient flow, making it ideal for most deep learning models.
+
+Sigmoid and Tanh functions are prone to vanishing gradients, resulting in slower learning and lower accuracy.
+
+Monitoring gradient norms helps in detecting training instabilities (vanishing or exploding gradients).
+
+Viva / Oral Questions and Answers:
+
+Q1. What is the role of an activation function in a neural network?
+A: It introduces non-linearity into the model and allows the network to learn complex relationships.
+
+Q2. Why do we need non-linear activation functions?
+A: Without them, the network becomes a simple linear model regardless of depth.
+
+Q3. What is the difference between Sigmoid and ReLU?
+A: Sigmoid saturates for large values (causing vanishing gradients), while ReLU is faster and avoids this issue.
+
+Q4. What is the vanishing gradient problem?
+A: It occurs when gradients become too small during backpropagation, preventing effective learning in early layers.
+
+Q5. What is the exploding gradient problem?
+A: When gradients grow too large, causing unstable updates and potential NaN values.
+
+Q6. How does ReLU help avoid vanishing gradients?
+A: For positive inputs, its derivative is 1, maintaining consistent gradient flow.
+
+Q7. What is the disadvantage of ReLU?
+A: Some neurons may permanently output zero (dying ReLU problem).
+
+Q8. Which activation is zero-centered?
+A: Tanh is zero-centered, whereas Sigmoid outputs between 0 and 1.
+
+Q9. What is the output range of each activation?
+A: Sigmoid (0,1), Tanh (-1,1), ReLU [0,∞).
+
+Q10. Which activation function performed best in this experiment?
+A: ReLU — because it provided stable gradients, faster learning, and higher accuracy.

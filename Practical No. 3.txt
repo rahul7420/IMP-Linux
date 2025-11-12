@@ -1,0 +1,243 @@
+Practical No. 3 – Implementation of Regularization Techniques (L2 and Dropout) in Neural Networks
+Aim:
+
+To implement and compare the performance of a neural network on the MNIST dataset using no regularization, L2 regularization, and Dropout regularization.
+
+Theory:
+1️⃣ What is Regularization?
+
+Regularization is a technique used to prevent overfitting in neural networks.
+Overfitting happens when a model performs very well on training data but poorly on unseen (test) data because it memorizes instead of learning general patterns.
+
+Regularization methods add constraints or noise during training so that the model learns simpler and more general features.
+
+2️⃣ Types of Regularization Used:
+A) L2 Regularization (Weight Decay):
+
+Adds a penalty term to the loss function based on the sum of squares of weights.
+
+The modified loss function becomes:
+
+𝐿
+=
+𝐿
+0
++
+𝜆
+2
+∑
+𝑖
+𝑤
+𝑖
+2
+L=L
+0
+	​
+
++
+2
+λ
+	​
+
+i
+∑
+	​
+
+w
+i
+2
+	​
+
+
+where
+
+𝐿
+0
+L
+0
+	​
+
+ = original loss,
+
+𝜆
+λ = regularization strength,
+
+𝑤
+𝑖
+w
+i
+	​
+
+ = weight parameters.
+
+It discourages large weight values, leading to smoother models and better generalization.
+
+In PyTorch, it is applied using:
+
+optimizer = optim.SGD(model.parameters(), lr=0.01, weight_decay=1e-4)
+
+B) Dropout Regularization:
+
+Randomly drops (turns off) some neurons during each training iteration.
+
+This prevents the network from becoming too dependent on specific neurons.
+
+During testing, all neurons are used but with reduced weights.
+
+Dropout can be represented as:
+
+𝑦
+=
+𝑓
+(
+𝑊
+𝑥
++
+𝑏
+)
+where randomly selected activations are set to 0 during training
+y=f(Wx+b)where randomly selected activations are set to 0 during training
+
+In PyTorch, implemented as:
+
+nn.Dropout(0.5)
+
+3️⃣ Model Architecture:
+
+Input layer: 784 neurons (28×28 pixels from MNIST images)
+
+Hidden layers:
+
+1st hidden layer → 256 neurons
+
+2nd hidden layer → 128 neurons
+
+Activation → ReLU
+
+Output layer: 10 neurons (for 10 digit classes)
+
+Loss function: Cross Entropy Loss
+
+Optimizer: SGD (Stochastic Gradient Descent)
+
+4️⃣ Purpose of Experiment:
+
+To compare how no regularization, L2 regularization, and dropout affect:
+
+Training loss and accuracy
+
+Validation (test) loss and accuracy
+
+Model’s ability to generalize
+
+**Algorithm:
+
+1.Import libraries – torch, torch.nn, torch.optim, matplotlib.
+
+2.Prepare dataset – MNIST dataset with normalization.
+
+3.Create data loaders – for training and testing sets.
+
+4.Define MLP model:
+
+	-2 hidden layers (256, 128 neurons)
+
+	-Activation: ReLU
+
+	-Dropout (0.5) applied optionally
+
+5.Define loss function – CrossEntropyLoss.
+
+6.Define optimizer:
+
+	-Without regularization: optim.SGD(model.parameters(), lr=0.01)
+
+	-With L2: optim.SGD(model.parameters(), lr=0.01, weight_decay=1e-4)
+
+7.Train the model:
+
+	-Forward pass → compute predictions
+
+	-Compute loss → backpropagate
+
+	-Update weights using optimizer
+
+	-Record training loss and accuracy
+
+8.Evaluate model:
+
+-Compute validation loss and accuracy on test set.
+
+9.Repeat experiments:
+
+(A) Without Regularization
+
+(B) With L2 Regularization
+
+(C) With Dropout
+
+10.Plot results:
+
+-Training vs Validation Loss Curve
+
+-Training vs Validation Accuracy Curve
+
+11.Compare performances of all three approaches.
+
+Result:
+
+The results show that regularization techniques help the model generalize better and prevent overfitting.
+
+Method	Training Accuracy	Validation Accuracy	Overfitting
+No Regularization	High (may overfit)	Lower	Yes
+L2 Regularization	Moderate	Better	Reduced
+Dropout	Slightly lower train acc	Good validation acc	Prevented
+
+Example Output:
+
+Epoch 5/5 Train Loss: 0.165, Train Acc: 96.45% Val Loss: 0.150, Val Acc: 97.20%
+
+
+The validation accuracy improves with L2 and Dropout, and the loss curves show more stability.
+
+Conclusion:
+
+L2 regularization penalizes large weights, encouraging simpler models.
+
+Dropout prevents the network from relying too heavily on specific neurons, improving generalization.
+
+Both methods reduce overfitting and help the model perform better on unseen data.
+
+Regularization is essential for building robust and reliable neural networks.
+
+Viva / Oral Questions and Answers:
+
+Q1. What is regularization?
+A technique used to reduce overfitting and improve model generalization.
+
+Q2. What is L2 regularization?
+It adds a penalty proportional to the square of the weights, preventing large weight values.
+
+Q3. What is dropout?
+A method where random neurons are deactivated during training to reduce overfitting.
+
+Q4. Why does dropout work?
+It prevents the network from becoming too dependent on specific neurons and forces it to learn redundant representations.
+
+Q5. What is weight decay in PyTorch?
+It is the parameter for L2 regularization inside the optimizer.
+
+Q6. How does regularization affect training accuracy?
+It slightly decreases training accuracy but improves test accuracy.
+
+Q7. Which optimizer did you use here?
+Stochastic Gradient Descent (SGD) with or without weight decay.
+
+Q8. What dataset was used?
+MNIST dataset – handwritten digits from 0 to 9.
+
+Q9. What activation function was used?
+ReLU (Rectified Linear Unit) for hidden layers.
+
+Q10. What loss function was used?
+Cross Entropy Loss for multi-class classification.

@@ -1,0 +1,191 @@
+Practical No. 8 – Implementation of Autoencoder
+Aim:
+
+To implement an Autoencoder using PyTorch for image reconstruction and feature extraction on the MNIST dataset.
+
+Theory:
+
+An Autoencoder is a type of unsupervised neural network that learns to compress (encode) the input data into a smaller representation and then reconstruct (decode) it back to the original form.
+
+It has two main parts:
+
+Encoder: Compresses input data into a lower-dimensional space (latent space).
+
+Decoder: Reconstructs the original data from the encoded representation.
+
+Working of Autoencoder:
+
+Input → Encoder → Latent Vector → Decoder → Output
+
+The network is trained to minimize the reconstruction error between the input and output.
+
+Mathematically,
+
+Loss
+=
+∣
+∣
+𝑋
+−
+𝑋
+^
+∣
+∣
+2
+Loss=∣∣X−
+X
+^
+∣∣
+2
+
+where
+
+𝑋
+X = Original input
+
+𝑋
+^
+X
+^
+ = Reconstructed output
+
+Purpose of Autoencoders:
+
+Dimensionality reduction (similar to PCA)
+
+Noise removal (Denoising Autoencoders)
+
+Feature extraction
+
+Image compression and reconstruction
+
+Types of Autoencoders:
+
+Basic Autoencoder – Simple encoder-decoder structure.
+
+Denoising Autoencoder – Learns to remove noise from data.
+
+Sparse Autoencoder – Forces sparsity in hidden layer for better feature learning.
+
+Variational Autoencoder (VAE) – Used for generating new data (like GANs).
+
+Algorithm:
+
+1.Import Libraries:
+-Import torch, torch.nn, torch.optim, torchvision, matplotlib.
+
+2.Load Dataset:
+
+-Use the MNIST dataset.
+
+-Normalize pixel values between 0 and 1.
+
+-Create DataLoader for training and testing.
+
+3.Define Autoencoder Architecture:
+
+-Encoder: Fully connected layers that reduce input dimension.
+
+-Decoder: Fully connected layers that reconstruct the input.
+Example:
+
+class Autoencoder(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.encoder = nn.Sequential(
+            nn.Linear(784, 128),
+            nn.ReLU(),
+            nn.Linear(128, 64)
+        )
+        self.decoder = nn.Sequential(
+            nn.Linear(64, 128),
+            nn.ReLU(),
+            nn.Linear(128, 784),
+            nn.Sigmoid()
+        )
+    def forward(self, x):
+        x = x.view(-1, 784)
+        encoded = self.encoder(x)
+        decoded = self.decoder(encoded)
+        return decoded
+
+
+4.Define Loss and Optimizer:
+
+-Loss Function: Mean Squared Error (MSE)
+
+-Optimizer: Adam or SGD
+
+5.Training Loop:
+
+-Forward pass → Reconstruct output.
+
+-Compute reconstruction loss (MSE).
+
+-Backpropagate and update weights.
+
+-Repeat for multiple epochs.
+
+6.Testing:
+
+-Pass test images through the trained model.
+
+-Compare original vs reconstructed images.
+
+7.Visualization:
+
+-Display original and reconstructed images side by side.
+
+
+Result:
+
+The autoencoder successfully learned to reconstruct MNIST digit images.
+
+Reconstructed images are similar to the original input.
+
+Loss decreases with each epoch.
+
+Example Output:
+
+Epoch [20/20], Loss: 0.015
+Reconstructed images closely match original inputs.
+
+Conclusion:
+
+The Autoencoder model efficiently learned compressed representations of the MNIST dataset.
+
+It can be used for image compression, denoising, or feature extraction.
+
+Autoencoders are a fundamental concept in unsupervised learning and form the basis of advanced models like Variational Autoencoders (VAE) and GANs.
+
+Viva / Oral Questions and Answers:
+
+Q1: What is an Autoencoder?
+A: It is a type of neural network that learns to encode data into a lower-dimensional space and reconstruct it back.
+
+Q2: What are the main parts of an Autoencoder?
+A: Encoder and Decoder.
+
+Q3: What is the purpose of the encoder?
+A: To compress or encode input data into a smaller feature representation.
+
+Q4: What is the purpose of the decoder?
+A: To reconstruct the original data from the encoded representation.
+
+Q5: What type of learning is used in Autoencoders?
+A: Unsupervised learning.
+
+Q6: What loss function is used?
+A: Mean Squared Error (MSE) loss between input and reconstructed output.
+
+Q7: What activation functions are used?
+A: ReLU for hidden layers, Sigmoid for the output layer.
+
+Q8: What optimizer is used?
+A: Adam optimizer.
+
+Q9: What dataset is used in this experiment?
+A: MNIST handwritten digits dataset.
+
+Q10: Mention one application of Autoencoders.
+A: Denoising, feature extraction, or image compression.
