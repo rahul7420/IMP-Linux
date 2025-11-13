@@ -3,6 +3,68 @@ Aim:
 
 To implement a Recurrent Neural Network (RNN) or Long Short-Term Memory (LSTM) model using PyTorch for sequence or text data classification, and to understand how it handles sequential dependencies.
 
+*****************************************************************************************************
+
+🟦 A) Code Theory — what each block does (concise)
+
+Imports & setup
+
+tensorflow.keras + utilities for datasets, preprocessing, models, and layers.
+
+max_features = 10000 keeps only the top 10k words in the IMDB vocabulary.
+
+maxlen = 200 pads/truncates every review to length 200 tokens.
+
+Load & pad data
+
+imdb.load_data(num_words=max_features) returns sequences of word indices (already integer-encoded).
+
+sequence.pad_sequences(..., maxlen=200) makes fixed-length inputs required by the model.
+
+Model architecture
+
+Embedding(max_features, 128) maps integers → 128-dim trainable vectors.
+
+SimpleRNN(128, dropout=0.2) is a vanilla recurrent layer with 128 hidden units. (Note: dropout here is input dropout; recurrent_dropout is for recurrent state).
+
+Dense(1, activation='sigmoid') outputs probability for positive sentiment (binary).
+
+Compile & training
+
+loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'].
+
+model.fit(...) trains for multiple epochs. You experimented with both batch_size 32 and 64.
+
+Interactive input
+
+imdb.get_word_index() returns a mapping word → index for tokenizing custom text.
+
+encode_review() maps raw words to indices with an offset and pads to maxlen.
+
+model.predict(processed_review) returns a probability; >0.5 interpreted as Positive.
+
+Re-training & final evaluation
+
+You re-trained with batch_size 64 for 5 epochs and printed final test accuracy.
+
+🟩 B) Output Theory — what the numbers mean
+
+Training accuracy reflects model performance on seen training examples.
+
+Validation/test accuracy measures generalization to unseen data.
+
+Your runs show training accuracy increasing (up to ~91% in last run) while test accuracy hovers around ~76–80% — this suggests some generalization gap (possible overfitting, or model capacity / data mismatch).
+
+Epoch logs (loss & accuracy) help diagnose:
+
+If train ↑, test ↑ — model is learning and generalizing.
+
+If train ↑, test ↓ or flat — model may be overfitting.
+
+The interactive prediction (confidence ≈ 0.797) shows the model assigns a decent probability to the input being positive.
+
+****************************************************************************************************************
+
 Theory:
 1️⃣ Introduction:
 
@@ -20,84 +82,6 @@ A Recurrent Neural Network (RNN) is designed to handle such sequential data by m
 2️⃣ RNN Architecture:
 
 An RNN processes input sequences one element at a time.
-At each time step t, it takes input xₜ, the previous hidden state hₜ₋₁, and produces a new hidden state hₜ as:
-
-ℎ
-𝑡
-=
-𝑓
-(
-𝑊
-𝑥
-ℎ
-𝑥
-𝑡
-+
-𝑊
-ℎ
-ℎ
-ℎ
-𝑡
-−
-1
-+
-𝑏
-ℎ
-)
-h
-t
-	​
-
-=f(W
-xh
-	​
-
-x
-t
-	​
-
-+W
-hh
-	​
-
-h
-t−1
-	​
-
-+b
-h
-	​
-
-)
-𝑦
-𝑡
-=
-𝑊
-ℎ
-𝑦
-ℎ
-𝑡
-+
-𝑏
-𝑦
-y
-t
-	​
-
-=W
-hy
-	​
-
-h
-t
-	​
-
-+b
-y
-	​
-
-
-Here:
 
 xₜ: input at time step t
 
@@ -125,251 +109,6 @@ Input Gate: Decides what new information to store.
 
 Output Gate: Decides what to output at the current step.
 
-LSTM equations:
-
-𝑓
-𝑡
-=
-𝜎
-(
-𝑊
-𝑓
-[
-ℎ
-𝑡
-−
-1
-,
-𝑥
-𝑡
-]
-+
-𝑏
-𝑓
-)
-f
-t
-	​
-
-=σ(W
-f
-	​
-
-[h
-t−1
-	​
-
-,x
-t
-	​
-
-]+b
-f
-	​
-
-)
-𝑖
-𝑡
-=
-𝜎
-(
-𝑊
-𝑖
-[
-ℎ
-𝑡
-−
-1
-,
-𝑥
-𝑡
-]
-+
-𝑏
-𝑖
-)
-i
-t
-	​
-
-=σ(W
-i
-	​
-
-[h
-t−1
-	​
-
-,x
-t
-	​
-
-]+b
-i
-	​
-
-)
-𝐶
-𝑡
-~
-=
-tanh
-⁡
-(
-𝑊
-𝐶
-[
-ℎ
-𝑡
-−
-1
-,
-𝑥
-𝑡
-]
-+
-𝑏
-𝐶
-)
-C
-t
-	​
-
-~
-	​
-
-=tanh(W
-C
-	​
-
-[h
-t−1
-	​
-
-,x
-t
-	​
-
-]+b
-C
-	​
-
-)
-𝐶
-𝑡
-=
-𝑓
-𝑡
-∗
-𝐶
-𝑡
-−
-1
-+
-𝑖
-𝑡
-∗
-𝐶
-𝑡
-~
-C
-t
-	​
-
-=f
-t
-	​
-
-∗C
-t−1
-	​
-
-+i
-t
-	​
-
-∗
-C
-t
-	​
-
-~
-	​
-
-𝑜
-𝑡
-=
-𝜎
-(
-𝑊
-𝑜
-[
-ℎ
-𝑡
-−
-1
-,
-𝑥
-𝑡
-]
-+
-𝑏
-𝑜
-)
-o
-t
-	​
-
-=σ(W
-o
-	​
-
-[h
-t−1
-	​
-
-,x
-t
-	​
-
-]+b
-o
-	​
-
-)
-ℎ
-𝑡
-=
-𝑜
-𝑡
-∗
-tanh
-⁡
-(
-𝐶
-𝑡
-)
-h
-t
-	​
-
-=o
-t
-	​
-
-∗tanh(C
-t
-	​
-
-)
-
-Where:
-
-σ = sigmoid activation
-
-* = element-wise multiplication
-
-Cₜ = cell state (long-term memory)
 
 5️⃣ Applications of RNN/LSTM:
 
@@ -494,4 +233,5 @@ Q9. What optimizer is commonly used?
 A: Adam Optimizer, as it provides faster convergence and adaptive learning rates.
 
 Q10. What are the main applications of LSTM?
+
 A: Sentiment analysis, machine translation, time series prediction, speech recognition, and text generation.
