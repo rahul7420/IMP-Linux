@@ -2,7 +2,49 @@ Practical No. 8 – Implementation of Autoencoder
 Aim:
 
 To implement an Autoencoder using PyTorch for image reconstruction and feature extraction on the MNIST dataset.
+****************************************************************************************************************************
 
+1) Brief summary of what you ran
+
+Built a SimpleNN MLP with num_layers hidden layers, each of size hidden_size, ReLU activations, and a final linear head for 10 classes.
+
+Split MNIST into 80/20 train/val using random_split.
+
+For each config you trained for 5 epochs with Adam and returned final training accuracy (from the last epoch) and validation accuracy.
+
+Results (best → config 3): more depth and larger hidden size improved both train and val accuracy:
+
+Config 1: train 95.81%, val 94.66%
+
+Config 2: train 96.01%, val 95.71%
+
+Config 3: train 96.91%, val 96.88% ← best
+
+Config 4: train 95.97%, val 95.79%
+
+2) Quick interpretation of results
+
+Trend: Increasing capacity (2 layers × 128 units) + larger batch gave the best performance. That’s expected: MNIST is easy and benefits from extra capacity up to a limit.
+
+Batch size effect: config 2 (batch 64) slightly improved val vs config 1 (batch 32) with same other hyperparams — sometimes larger batch size gives smoother gradient and slightly different generalization.
+
+Learning rate: config 4 lowered LR to 0.0005 but same capacity as some others — lower LR slowed learning and yielded slightly lower train accuracy though val stayed comparable.
+
+No severe overfitting after 5 epochs — training and validation accuracies are close, indicating a stable regime.
+
+3) Small caveats / code notes I noticed
+
+!pip install wandb -q ran but you never used wandb in the loop — if you intended to log experiments, I’ll show how below.
+
+model.summary() earlier in your TensorFlow run showed zero params because model was unbuilt — not an issue here, but FYI when working with Keras.
+
+You compute train_acc inside the epoch loop and return the last epoch’s train_acc — that’s fine but usually we log per-epoch metrics (better for comparison/plots).
+
+For faster DataLoader throughput on a machine with CPU cores / GPU, consider num_workers>0 and pin_memory=True (when using GPU).
+
+For reproducibility, set seeds for torch, numpy, and random.
+
+****************************************************************************************************************************
 Theory:
 
 An Autoencoder is a type of unsupervised neural network that learns to compress (encode) the input data into a smaller representation and then reconstruct (decode) it back to the original form.
@@ -188,4 +230,5 @@ Q9: What dataset is used in this experiment?
 A: MNIST handwritten digits dataset.
 
 Q10: Mention one application of Autoencoders.
+
 A: Denoising, feature extraction, or image compression.
