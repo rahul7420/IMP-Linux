@@ -9,6 +9,66 @@ The Perceptron is the simplest type of artificial neural network used for binary
 It was introduced by Frank Rosenblatt in 1958.
 The perceptron simulates a biological neuron that receives inputs, multiplies them with weights, adds a bias, and passes the result through an activation function to produce an output.
 
+*******************************************
+✅ Summary of the Code
+1. Dataset Creation
+
+You created the AND gate dataset with 4 inputs:
+
+(0,0),(0,1),(1,0),(1,1)
+
+Labels are:
+0,0,0,1
+
+2. Perceptron Initialization
+
+The perceptron starts with random weights and a random bias.
+
+Learning rate = 0.1
+
+Training epochs = 20
+
+3. Training Process
+
+For each input:
+
+Compute:
+z=w1x1+w2x2+bias
+
+Apply step function to predict 0 or 1.
+
+Compare with actual label → calculate error.
+
+Update weights and bias using the perceptron learning rule:
+w=w+lr×error×x
+b=b+lr×error
+
+Over multiple epochs, the perceptron adjusts itself to correctly learn the AND logic.
+
+4. Output During Training
+
+Each epoch prints updated weights and bias.
+
+You see values gradually changing until they converge.
+
+This shows the perceptron is learning correctly.
+
+✅ Summary of Output (Final Decision Boundary Plot)
+
+The final plot shows:
+
+Input points of AND gate colored by their class (0 or 1).
+
+A straight line that the perceptron learned → this line separates:
+
+All 0 outputs (left/bottom side)
+
+The single 1 output (top-right corner)
+
+This means the perceptron successfully learned the AND gate, which is linearly separable.
+
+******************************
+
 Perceptron Model:
 
 Each perceptron has:
@@ -114,4 +174,5 @@ Q: What happens if the learning rate is too high?
 A: The model oscillates and may not converge properly.
 
 Q: What is convergence in a perceptron?
+
 A: When all samples are correctly classified and no weight updates are required.
