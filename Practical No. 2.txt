@@ -3,6 +3,131 @@ Aim:
 
 To implement a Multilayer Perceptron (MLP) using PyTorch for image classification on the MNIST or Fashion-MNIST dataset, and to plot the loss and accuracy curves.
 
+***************************************************
+🟦 A) THEORY OF THE CODE (What the code is doing)
+1. Hyperparameters Setup
+
+You define batch size, learning rate, number of epochs, hidden layer sizes, and activation function.
+
+These control how the neural network learns and how fast it updates weights.
+
+2. Dataset Loading & Preprocessing
+
+You load MNIST or FashionMNIST datasets.
+
+Images are converted to tensors and normalized to the range [-1, 1].
+
+DataLoader groups images into batches for efficient training.
+
+3. MLP Model Definition
+
+You create a Multi-Layer Perceptron with:
+
+Input layer of size 784 (28×28)
+
+Two hidden layers (256 → 128 neurons)
+
+Output layer (10 classes)
+
+Each hidden layer uses the chosen activation function (ReLU by default).
+
+Images are flattened before passing through the network.
+
+4. Loss Function & Optimizer
+
+CrossEntropyLoss: Measures error between predicted class scores and true labels.
+
+Adam optimizer: Updates network weights using gradients.
+
+5. Training Loop
+
+For each epoch:
+
+For each batch:
+
+Forward pass → model predicts class probabilities.
+
+Loss is calculated.
+
+Backpropagation computes gradients.
+
+Adam optimizer updates the weights.
+
+Training loss (average per epoch) is stored.
+
+6. Testing (Evaluation Loop)
+
+Model stops learning (no gradient calculation).
+
+Predicts on the test dataset.
+
+Calculates:
+
+Test Loss
+
+Accuracy = (correct predictions / total samples) × 100
+
+These values are stored for plotting.
+
+7. Plotting Results
+
+The code plots:
+
+Training vs Test Loss
+
+Test Accuracy vs Epochs
+
+This provides a visual understanding of how well the model learned.
+
+
+🟩 B) THEORY OF THE OUTPUT (What the results represent)
+1. Terminal Output per Epoch
+
+Example:
+
+Epoch [1/10], Train Loss: 0.40, Test Loss: 0.35, Accuracy: 88.50%
+
+
+This means:
+
+Train Loss: how well the model learned from training data.
+
+Test Loss: how well it performs on unseen data.
+
+Accuracy: percentage of correctly classified test images.
+
+As training continues:
+
+Train loss should decrease.
+
+Test loss should also decrease or stabilize.
+
+Accuracy should increase.
+
+2. Loss Curves
+
+The Loss Curve shows:
+
+Training loss gradually decreasing → model is learning.
+
+Test loss showing whether the model generalizes well.
+
+If both go down → good learning.
+
+If test loss increases while train loss decreases → overfitting.
+
+3. Accuracy Curve
+
+Shows how the model’s test accuracy improves each epoch.
+
+For MNIST: Expected 95–98% accuracy.
+
+For FashionMNIST: Expected 85–90%.
+
+A smooth upward curve means the model is improving steadily.
+
+***********************************************************
+
 Theory:
 
 A Multilayer Perceptron (MLP) is a type of feedforward artificial neural network that consists of three main layers:
@@ -22,56 +147,6 @@ The input layer receives raw data (for MNIST → 28×28 pixels = 784 inputs).
 
 Data is passed through hidden layers where each neuron computes a weighted sum:
 
-𝑧
-=
-(
-𝑤
-1
-𝑥
-1
-+
-𝑤
-2
-𝑥
-2
-+
-.
-.
-.
-+
-𝑤
-𝑛
-𝑥
-𝑛
-)
-+
-𝑏
-z=(w
-1
-	​
-
-x
-1
-	​
-
-+w
-2
-	​
-
-x
-2
-	​
-
-+...+w
-n
-	​
-
-x
-n
-	​
-
-)+b
-
 The result is passed through an activation function (like ReLU, Sigmoid, or Tanh).
 
 The final layer uses the Softmax function to produce probabilities for each class.
@@ -86,65 +161,6 @@ ReLU	max(0, x)	[0, ∞)	Fast and avoids vanishing gradients
 Loss Function:
 
 For multi-class classification, Cross Entropy Loss is used:
-
-𝐿
-=
-−
-∑
-𝑖
-=
-1
-𝑛
-𝑦
-𝑖
-log
-⁡
-(
-𝑦
-𝑖
-^
-)
-L=−
-i=1
-∑
-n
-	​
-
-y
-i
-	​
-
-log(
-y
-i
-	​
-
-^
-	​
-
-)
-
-where
-
-𝑦
-𝑖
-y
-i
-	​
-
- = true label
-
-𝑦
-𝑖
-^
-y
-i
-	​
-
-^
-	​
-
- = predicted probability for class i
 
 Optimizer:
 
@@ -256,4 +272,5 @@ Q9. What happens if we increase the number of hidden layers?
 The model may learn better representations but can also overfit or train slower.
 
 Q10. Can an MLP handle image spatial structure well?
+
 Not very efficiently — CNNs (Convolutional Neural Networks) handle spatial patterns better.
