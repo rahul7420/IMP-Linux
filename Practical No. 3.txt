@@ -3,6 +3,204 @@ Aim:
 
 To implement and compare the performance of a neural network on the MNIST dataset using no regularization, L2 regularization, and Dropout regularization.
 
+*******************************************************************************************
+
+🟦 A) THEORY OF THE CODE (WHAT THE CODE DOES)
+1. Data Preparation
+
+MNIST images (28×28 grayscale) are loaded.
+
+Transformations:
+
+Convert images to tensors.
+
+Normalize them to range [-1, 1].
+
+DataLoader creates shuffled mini-batches for training and sequential batches for testing.
+
+This ensures efficient loading and stable training.
+
+2. Model Definition — MLP With Optional Regularization
+
+The model is a Multi-Layer Perceptron (MLP) with:
+
+Input layer = 784 neurons
+
+Hidden Layer 1 → 256 neurons + ReLU
+
+Hidden Layer 2 → 128 neurons + ReLU
+
+Output layer → 10 neurons (digits 0–9)
+
+Dropout (0.5) is applied only when enabled.
+
+Thus, the model can behave in 3 modes:
+
+No regularization
+
+L2 regularization
+
+Dropout
+
+3. Training + Evaluation Function
+
+Each epoch has two phases:
+
+(a) Training Phase
+
+Model is set to train() → dropout is active.
+
+For every batch:
+
+Forward pass
+
+Loss = CrossEntropyLoss
+
+Backpropagation
+
+SGD optimizer updates weights
+
+Also computes:
+
+Training loss
+
+Training accuracy
+
+(b) Validation Phase (Test Loop)
+
+Model is set to eval() → dropout switches off.
+
+No backprop.
+
+Only computes:
+
+Validation loss
+
+Validation accuracy
+
+Each epoch prints both.
+
+4. Running 3 Experiments
+
+You run training three times with:
+
+(A) No Regularization
+
+Normal model
+
+No dropout
+
+No L2
+
+Optimizer: SGD(lr=0.01)
+
+(B) L2 Regularization (Weight Decay)
+
+Adds penalty for large weights
+
+Forces the model to keep weights small
+
+Makes the model more stable
+
+Helps reduce overfitting
+
+(C) Dropout
+
+Randomly drops 50% neurons during training
+
+Forces different paths through the network
+
+Prevents co-adaptation of neurons
+
+Greatly reduces overfitting
+
+5. Visualization
+
+The final curves compare:
+
+Training loss
+
+Validation loss
+
+Training accuracy
+
+Validation accuracy
+
+for all three models.
+
+This helps understand how regularization changes model behavior.
+
+🟩 B) THEORY OF THE OUTPUT (WHAT THE RESULTS MEAN)
+
+The printed results show, for each epoch:
+
+Train Loss | Train Accuracy | Validation Loss | Validation Accuracy
+
+
+Each experiment (No-Reg, L2, Dropout) produces different behavior.
+
+📌 1. No Regularization — Expected Output Behavior
+
+Training loss decreases sharply.
+
+Train accuracy becomes very high.
+
+Validation accuracy improves at first but may stagnate.
+
+Validation loss may start increasing → overfitting.
+
+Reason:
+The model memorizes the training data without any penalty.
+
+📌 2. L2 Regularization — Expected Output Behavior
+
+Training loss decreases more slowly.
+
+Train accuracy is slightly lower than No-Reg.
+
+Validation loss decreases more smoothly.
+
+Validation accuracy becomes more stable.
+
+Reason:
+L2 prevents weights from becoming too large → better generalization.
+
+📌 3. Dropout — Expected Output Behavior
+
+Training loss is higher (because dropout makes training harder).
+
+Training accuracy is lower.
+
+Validation accuracy improves steadily and becomes very stable.
+
+Overfitting is heavily reduced.
+
+Reason:
+Dropout forces the model to learn many independent pathways → robust learning.
+
+🎯 4. Plot Interpretation
+Loss Plot
+
+No-Reg → lowest train loss but highest validation loss
+
+L2 → moderate train & validation loss
+
+Dropout → higher train loss but lowest validation loss
+
+Accuracy Plot
+
+No-Reg → highest train accuracy but validation accuracy fluctuates
+
+L2 → balanced
+
+Dropout → stable and often best validation accuracy
+
+This demonstrates that:
+
+Regularization improves generalization by reducing overfitting.
+
+***********************************************************************************
+
 Theory:
 1️⃣ What is Regularization?
 
@@ -16,59 +214,6 @@ A) L2 Regularization (Weight Decay):
 
 Adds a penalty term to the loss function based on the sum of squares of weights.
 
-The modified loss function becomes:
-
-𝐿
-=
-𝐿
-0
-+
-𝜆
-2
-∑
-𝑖
-𝑤
-𝑖
-2
-L=L
-0
-	​
-
-+
-2
-λ
-	​
-
-i
-∑
-	​
-
-w
-i
-2
-	​
-
-
-where
-
-𝐿
-0
-L
-0
-	​
-
- = original loss,
-
-𝜆
-λ = regularization strength,
-
-𝑤
-𝑖
-w
-i
-	​
-
- = weight parameters.
 
 It discourages large weight values, leading to smoother models and better generalization.
 
@@ -86,15 +231,6 @@ During testing, all neurons are used but with reduced weights.
 
 Dropout can be represented as:
 
-𝑦
-=
-𝑓
-(
-𝑊
-𝑥
-+
-𝑏
-)
 where randomly selected activations are set to 0 during training
 y=f(Wx+b)where randomly selected activations are set to 0 during training
 
@@ -240,4 +376,5 @@ Q9. What activation function was used?
 ReLU (Rectified Linear Unit) for hidden layers.
 
 Q10. What loss function was used?
+
 Cross Entropy Loss for multi-class classification.
