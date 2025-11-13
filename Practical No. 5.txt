@@ -33,28 +33,41 @@ Convolutional Layer (Conv Layer):
 
 Performs convolution between the input and learnable filters (kernels).
 
-Formula:
+********************************
 
-𝑌
-(
-𝑖
-,
-𝑗
-)
-=
-(
-𝑋
-∗
-𝑊
-)
-(
-𝑖
-,
-𝑗
-)
-+
-𝑏
-Y(i,j)=(X∗W)(i,j)+b
+Detailed explanation of key functions used (one-line each)
+
+1.mnist.load_data() — downloads and returns train/test splits.
+
+2.reshape(...,1) — adds channel dimension for Conv2D.
+
+3./ 255 — scale to [0,1].
+
+4.to_categorical() — convert integer labels to one-hot vectors.
+
+5.ImageDataGenerator(...) — specify augmentation transforms.
+
+6.datagen.flow(x_train, y_train, batch_size=64) — yields augmented batches for training.
+
+7.Conv2D(filters, kernel, activation) — convolution layer producing feature maps.
+
+8.MaxPooling2D(pool) — downsample spatial dimensions.
+
+9.Flatten() — convert 3D feature maps to 1D vector.
+
+10.Dense(units, activation) — fully connected layer.
+
+11.softmax — converts logits to probabilities that sum to 1.
+
+12.compile(optimizer, loss) — configure training: optimizer and loss.
+
+13.fit(...) — train the model.
+
+14.evaluate(...) — compute metrics on test set.
+
+**********************************
+
+
 
 Detects features such as edges and corners.
 
@@ -175,34 +188,28 @@ The experiment proves that CNNs achieve better accuracy and generalization for i
 
 CNNs form the foundation for advanced models like ResNet, VGG, and Inception networks.
 
-Viva / Oral Questions and Answers:
+What to say in viva — short, memorized answers
 
-Q1. What is a CNN?
-A Convolutional Neural Network is a deep learning model designed to process and classify image data using convolutional, pooling, and fully connected layers.
+Q: Why normalize images?
+A: To scale inputs in a similar range so training is numerically stable and converges faster.
 
-Q2. What is convolution?
-Convolution is an operation where a kernel (filter) slides over the image to detect features like edges or corners.
+Q: Why use softmax + categorical_crossentropy?
+A: Softmax produces class probabilities; categorical cross-entropy measures the distance between predicted distribution and true one-hot label.
 
-Q3. What is the role of ReLU?
-ReLU introduces non-linearity and helps prevent the vanishing gradient problem.
+Q: Why does CNN perform better than MLP on images?
+A: CNN uses local receptive fields and weight sharing (filters) to learn spatial features efficiently; MLP ignores spatial structure.
 
-Q4. What is the purpose of pooling?
-Pooling reduces the spatial dimensions of the feature map and helps make the model more robust to small image translations.
+Q: What does ImageDataGenerator do?**
+A: It applies random transformations to training images each epoch (augmentation) to improve generalization.
 
-Q5. What is the difference between CNN and MLP?
-CNN preserves spatial relationships using convolutions; MLP flattens the input, ignoring spatial structure.
+Q: Why use Adam optimizer?**
+A: Adam adapts learning rates per parameter and includes momentum — often converges faster and requires little tuning.
 
-Q6. Why is CNN better for images?
-It captures local patterns, requires fewer parameters, and generalizes well for visual tasks.
+Q: What is overfitting and how to avoid it?**
+A: Overfitting is when model fits training data too well but fails on new data. Avoid with augmentation, dropout, L2, early stopping.
 
-Q7. What is padding and stride in convolution?
-Padding adds extra pixels around the image to preserve size; stride determines how far the filter moves during convolution.
+Q: What is a filter in Conv2D?**
+A: A small matrix (kernel) convolved with the image to detect patterns like edges and textures.
 
-Q8. What loss function is used for image classification?
-Cross Entropy Loss.
-
-Q9. What optimizer is used in this experiment?
-Adam or SGD optimizer.
-
-Q10. What are the main layers in a CNN?
-Convolutional layer, activation function (ReLU), pooling layer, and fully connected layer.
+Q: What is pooling for?**
+A: Reduces spatial dimensions and makes features robust to small translations.
