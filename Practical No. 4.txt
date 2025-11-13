@@ -4,6 +4,108 @@ Aim:
 To implement a Multilayer Perceptron (MLP) using different activation functions (Sigmoid, Tanh, and ReLU) on the MNIST dataset,
 and to compare their effects on training loss, accuracy, and gradient norms.
 
+************************************************************************************
+
+✅ Theory — Code (what each part does)
+1. Device & libraries
+
+Selects GPU if available (device = cuda) otherwise CPU. This speeds up training when a GPU exists.
+
+2. Data loading & transforms
+
+Loads MNIST train & test sets.
+
+ToTensor() converts images to tensors; Normalize((0.5,), (0.5,)) scales pixels to ~[-1,1].
+
+train_loader yields shuffled mini-batches of 64 for training; test_loader exists but is not used for evaluation in this script.
+
+3. MLP model
+
+MLP is a simple fully-connected network:
+
+Input: 28×28 flattened → 784 features
+
+Hidden1: 256 neurons → activation
+
+Hidden2: 128 neurons → activation
+
+Output: 10 logits (one per digit class)
+
+The activation function is passed in (Sigmoid / Tanh / ReLU), making the model reusable for experiments.
+
+4. train_model function
+
+Creates model → moves it to device.
+
+Uses Adam optimizer and CrossEntropyLoss.
+
+For each epoch and batch:
+
+Forward pass → compute logits.
+
+Compute loss → loss.backward() to accumulate gradients.
+
+Compute gradient norm: loops over parameters, gets each p.grad.data.norm(2), squares and sums, then takes square root → Euclidean norm of the gradient vector. This is appended per batch.
+
+optimizer.step() updates weights.
+
+Track training loss (per batch) and accuracy (per epoch).
+
+Returns: lists of per-iteration losses, per-epoch accuracies, per-iteration gradient norms.
+
+5. Experiments loop
+
+Runs train_model separately for three activations: Sigmoid, Tanh, ReLU so you can compare training dynamics.
+
+6. Visualization
+
+Three subplots:
+
+Training Loss vs iteration (plots batch losses collected across epochs).
+
+Training Accuracy vs epoch (one value per epoch, per activation).
+
+Gradient Norms vs iteration (how the magnitude of gradients changes over training).
+
+✅ Theory — Output (what the results mean & what to expect)
+A. Training Loss plot
+
+Shows how the batch loss decreases during training.
+
+ReLU typically shows faster, more stable decrease.
+
+Sigmoid and Tanh may decrease slower (and can plateau) because of saturation (outputs near ±1 lead to tiny gradients).
+
+B. Training Accuracy plot
+
+Accuracy is computed on the training set at the end of each epoch.
+
+Expect:
+
+ReLU → fastest rise in accuracy and highest final training accuracy.
+
+Tanh → good performance, often better than Sigmoid because it’s zero-centered.
+
+Sigmoid → slower improvement, may underperform due to vanishing gradients.
+
+Note: These are training accuracies. No test/validation accuracy is shown; you should evaluate on test_loader to measure generalization.
+
+C. Gradient Norms plot
+
+Shows the Euclidean norm of the gradient vector per batch.
+
+Interpretation:
+
+If norms → very small (near 0): vanishing gradients (training slows/stalls). Sigmoid/Tanh can cause this when units saturate.
+
+If norms → very large or explode: risk of unstable updates; may need gradient clipping.
+
+ReLU tends to keep usable gradient magnitudes (not vanishing for positive activations), so gradient norms often remain healthy.
+
+Tracking grad norms helps diagnose optimization issues (vanishing/exploding gradients, bad learning rates).
+
+**************************************************************************
+
 Theory:
 
 An Activation Function introduces non-linearity into a neural network, enabling it to learn complex, non-linear patterns in the data.
@@ -157,4 +259,5 @@ Q9. What is the output range of each activation?
 A: Sigmoid (0,1), Tanh (-1,1), ReLU [0,∞).
 
 Q10. Which activation function performed best in this experiment?
+
 A: ReLU — because it provided stable gradients, faster learning, and higher accuracy.
